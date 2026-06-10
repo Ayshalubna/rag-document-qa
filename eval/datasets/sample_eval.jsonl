@@ -1,0 +1,5 @@
+{"question": "What is FAISS and who developed it?", "expected_source": "faiss_overview.md", "answer_keywords": ["similarity", "vectors"]}
+{"question": "What are the main benefits of retrieval-augmented generation?", "expected_source": "rag_concepts.md", "answer_keywords": ["hallucination"]}
+{"question": "Which embedding model does this project use?", "expected_source": "embeddings.md", "answer_keywords": ["MiniLM"]}
+{"question": "Which FAISS index types support approximate search?", "expected_source": "faiss_overview.md", "answer_keywords": ["IVF"]}
+{"question": "Why are embeddings computed locally?", "expected_source": "embeddings.md", "answer_keywords": ["private"]}

@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-document-qa"
+version = "1.0.0"
+description = "Production-ready Retrieval-Augmented Generation system for document Q&A: LangChain + FAISS + local LLM (Ollama), served via FastAPI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Vinay" }]
+keywords = ["rag", "llm", "faiss", "langchain", "fastapi", "ollama"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "langchain-core>=0.2",
+    "langchain-community>=0.2",
+    "langchain-text-splitters>=0.2",
+    "faiss-cpu>=1.8",
+    "pypdf>=4.2",
+    "tenacity>=8.3",
+]
+
+[project.optional-dependencies]
+# Real embedding + LLM backends (heavy: pulls in torch). Not needed for tests.
+inference = [
+    "langchain-huggingface>=0.0.3",
+    "sentence-transformers>=3.0",
+    "langchain-ollama>=0.1",
+]
+dev = [
+    "pytest>=8.2",
+    "pytest-cov>=5.0",
+    "httpx>=0.27",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+]
+
+[project.scripts]
+rag-ingest = "rag_qa.cli.ingest:main"
+rag-eval = "rag_qa.cli.evaluate:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_qa"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "integration: tests that exercise the API end-to-end (with fakes)",
+]
+
+[tool.coverage.run]
+source = ["src/rag_qa"]
+omit = ["src/rag_qa/cli/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "src"
+packages = ["rag_qa"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = true
+no_implicit_optional = true
