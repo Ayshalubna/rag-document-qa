@@ -125,7 +125,7 @@ class FaissVectorStore:
             self._doc_count = len(
                 {
                     doc.metadata.get("source")
-                    for doc in self._store.docstore._dict.values()  # noqa: SLF001
+                    for doc in self._store.docstore._dict.values()
                 }
             )
         logger.info("Loaded index from %s (%d chunks)", index_dir, self.chunk_count)
