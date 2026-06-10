@@ -59,3 +59,12 @@ def test_save_and_load_roundtrip(tmp_path: Path) -> None:
 def test_load_missing_index_returns_false(tmp_path: Path) -> None:
     store = FaissVectorStore(DeterministicFakeEmbeddings())
     assert store.load(tmp_path / "nope") is False
+
+
+def test_doc_count_restored_after_load(tmp_path: Path) -> None:
+    store = _store_with_docs()
+    assert store.doc_count == 2
+    store.save(tmp_path / "idx")
+    fresh = FaissVectorStore(DeterministicFakeEmbeddings())
+    fresh.load(tmp_path / "idx")
+    assert fresh.doc_count == 2

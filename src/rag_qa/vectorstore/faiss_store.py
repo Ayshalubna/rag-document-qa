@@ -122,5 +122,11 @@ class FaissVectorStore:
                 # Safe here: we only ever load indexes this service wrote.
                 allow_dangerous_deserialization=True,
             )
+            self._doc_count = len(
+                {
+                    doc.metadata.get("source")
+                    for doc in self._store.docstore._dict.values()  # noqa: SLF001
+                }
+            )
         logger.info("Loaded index from %s (%d chunks)", index_dir, self.chunk_count)
         return True
